@@ -1,3 +1,9 @@
+---
+title: melanoma_skincancer_detector
+app_file: app.py
+sdk: gradio
+sdk_version: 6.1.0
+---
 # Melanoma Skin Cancer Detection
 
 Binary classification of dermoscopic images (**benign vs malignant**) using a fine-tuned **EfficientNetB3** backbone trained on the [Melanoma Skin Cancer Dataset of 10 000 Images](https://www.kaggle.com/datasets/hasnainjaved/melanoma-skin-cancer-dataset-of-10000-images).
