@@ -85,7 +85,7 @@ _THEME = gr.themes.Soft(
     font=[gr.themes.GoogleFont('Inter'), 'ui-sans-serif', 'sans-serif'],
 )
 
-with gr.Blocks(theme=_THEME, title='Melanoma Detection') as demo:
+with gr.Blocks(title='Melanoma Detection') as demo:
     gr.Markdown("""
 # 🔬 Melanoma Skin Cancer Detection
 **AI-powered dermoscopic image analysis** using **EfficientNetB3** fine-tuned on the
@@ -117,4 +117,4 @@ Melanoma Skin Cancer dataset (10 000 images). Upload a skin lesion image to begi
 """)
 
 if __name__ == '__main__':
-    demo.launch()
+    demo.launch(theme=_THEME)
