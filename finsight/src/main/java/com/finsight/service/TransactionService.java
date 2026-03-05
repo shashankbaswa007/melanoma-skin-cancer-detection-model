@@ -34,6 +34,10 @@ public class TransactionService {
         if (request.getCategoryId() != null) {
             category = categoryRepository.findById(request.getCategoryId())
                     .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + request.getCategoryId()));
+            // Ensure the category is either a default (no owner) or belongs to the current user
+            if (category.getUser() != null && !category.getUser().getId().equals(currentUser.getId())) {
+                throw new UnauthorizedException("You are not authorized to use this category");
+            }
         }
 
         Transaction transaction = Transaction.builder()
@@ -63,6 +67,10 @@ public class TransactionService {
         if (request.getCategoryId() != null) {
             category = categoryRepository.findById(request.getCategoryId())
                     .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + request.getCategoryId()));
+            // Ensure the category is either a default (no owner) or belongs to the current user
+            if (category.getUser() != null && !category.getUser().getId().equals(currentUser.getId())) {
+                throw new UnauthorizedException("You are not authorized to use this category");
+            }
         }
 
         transaction.setAmount(request.getAmount());

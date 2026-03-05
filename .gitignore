@@ -19,3 +19,10 @@ __pycache__/
 
 # macOS
 .DS_Store
+
+# Java / Maven build artifacts
+finsight/target/
+finsight/.mvn/wrapper/maven-wrapper.jar
+
+# Environment secrets (never commit real .env)
+finsight/.env

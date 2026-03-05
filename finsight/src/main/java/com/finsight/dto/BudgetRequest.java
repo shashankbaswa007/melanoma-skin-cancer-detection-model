@@ -23,6 +23,6 @@ public class BudgetRequest {
     private Integer month;
 
     @NotNull
-    @Min(2000)
+    @Min(1900)
     private Integer year;
 }

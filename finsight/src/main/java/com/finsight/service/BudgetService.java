@@ -38,6 +38,11 @@ public class BudgetService {
         Category category = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + request.getCategoryId()));
 
+        // Ensure the category is either a default (no owner) or belongs to the current user
+        if (category.getUser() != null && !category.getUser().getId().equals(currentUser.getId())) {
+            throw new BadRequestException("You are not authorized to use this category");
+        }
+
         if (budgetRepository.findByUserIdAndCategoryIdAndMonthAndYear(
                 currentUser.getId(), request.getCategoryId(), request.getMonth(), request.getYear()).isPresent()) {
             throw new BadRequestException("Budget already exists for this category and period");
