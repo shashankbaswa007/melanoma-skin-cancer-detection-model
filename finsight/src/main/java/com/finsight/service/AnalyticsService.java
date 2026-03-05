@@ -124,10 +124,7 @@ public class AnalyticsService {
             return List.of();
         }
 
-        List<Transaction> allExpenses = transactionRepository.findByUserIdOrderByDateDesc(userId)
-                .stream()
-                .filter(t -> t.getType() == Transaction.TransactionType.EXPENSE)
-                .collect(Collectors.toList());
+        List<Transaction> allExpenses = transactionRepository.findExpensesByUserId(userId);
 
         return allExpenses.stream()
                 .filter(t -> {

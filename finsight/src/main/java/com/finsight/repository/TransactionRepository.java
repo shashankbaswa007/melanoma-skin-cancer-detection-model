@@ -34,4 +34,10 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     @Query("SELECT STDDEV(t.amount) FROM Transaction t WHERE t.user.id = :userId AND t.type = 'EXPENSE'")
     BigDecimal findStdDevExpenseAmount(@Param("userId") Long userId);
+
+    @Query("SELECT t FROM Transaction t WHERE t.user.id = :userId AND t.type = 'EXPENSE' AND YEAR(t.date) = :year AND MONTH(t.date) = :month ORDER BY t.date DESC")
+    List<Transaction> findExpensesByUserIdAndMonth(@Param("userId") Long userId, @Param("year") int year, @Param("month") int month);
+
+    @Query("SELECT t FROM Transaction t WHERE t.user.id = :userId AND t.type = 'EXPENSE' ORDER BY t.date DESC")
+    List<Transaction> findExpensesByUserId(@Param("userId") Long userId);
 }

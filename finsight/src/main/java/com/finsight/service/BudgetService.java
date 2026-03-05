@@ -74,13 +74,12 @@ public class BudgetService {
 
         return budgets.stream().map(budget -> {
             List<Transaction> categoryTransactions = transactionRepository
-                    .findByUserIdAndCategoryIdOrderByDateDesc(currentUser.getId(), budget.getCategory().getId())
+                    .findExpensesByUserIdAndMonth(currentUser.getId(), year, month)
                     .stream()
-                    .filter(t -> t.getDate().getMonthValue() == month && t.getDate().getYear() == year)
+                    .filter(t -> budget.getCategory().getId().equals(t.getCategory() != null ? t.getCategory().getId() : null))
                     .collect(Collectors.toList());
 
             BigDecimal amountSpent = categoryTransactions.stream()
-                    .filter(t -> t.getType() == Transaction.TransactionType.EXPENSE)
                     .map(Transaction::getAmount)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 

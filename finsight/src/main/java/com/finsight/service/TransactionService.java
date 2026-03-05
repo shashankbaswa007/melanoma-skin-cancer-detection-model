@@ -4,6 +4,7 @@ import com.finsight.dto.TransactionRequest;
 import com.finsight.dto.TransactionResponse;
 import com.finsight.exception.BadRequestException;
 import com.finsight.exception.ResourceNotFoundException;
+import com.finsight.exception.UnauthorizedException;
 import com.finsight.model.Category;
 import com.finsight.model.Transaction;
 import com.finsight.model.User;
@@ -56,7 +57,7 @@ public class TransactionService {
                 .orElseThrow(() -> new ResourceNotFoundException("Transaction not found with id: " + id));
 
         if (!transaction.getUser().getId().equals(currentUser.getId())) {
-            throw new BadRequestException("You are not authorized to update this transaction");
+            throw new UnauthorizedException("You are not authorized to update this transaction");
         }
 
         Category category = null;
@@ -82,7 +83,7 @@ public class TransactionService {
                 .orElseThrow(() -> new ResourceNotFoundException("Transaction not found with id: " + id));
 
         if (!transaction.getUser().getId().equals(currentUser.getId())) {
-            throw new BadRequestException("You are not authorized to delete this transaction");
+            throw new UnauthorizedException("You are not authorized to delete this transaction");
         }
 
         transactionRepository.delete(transaction);
