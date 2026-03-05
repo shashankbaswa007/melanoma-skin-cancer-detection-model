@@ -13,7 +13,6 @@ import com.finsight.repository.TransactionRepository;
 import com.finsight.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -92,24 +91,14 @@ public class TransactionService {
     public Page<TransactionResponse> getTransactions(Long categoryId, Pageable pageable) {
         User currentUser = securityUtils.getCurrentUser();
 
-        List<Transaction> transactions;
+        Page<Transaction> transactions;
         if (categoryId != null) {
-            transactions = transactionRepository.findByUserIdAndCategoryIdOrderByDateDesc(currentUser.getId(), categoryId);
+            transactions = transactionRepository.findByUserIdAndCategoryIdOrderByDateDesc(currentUser.getId(), categoryId, pageable);
         } else {
-            transactions = transactionRepository.findByUserIdOrderByDateDesc(currentUser.getId());
+            transactions = transactionRepository.findByUserIdOrderByDateDesc(currentUser.getId(), pageable);
         }
 
-        List<TransactionResponse> responses = transactions.stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
-
-        int start = (int) pageable.getOffset();
-        int end = Math.min(start + pageable.getPageSize(), responses.size());
-        List<TransactionResponse> pageContent = start >= responses.size()
-                ? List.of()
-                : responses.subList(start, end);
-
-        return new PageImpl<>(pageContent, pageable, responses.size());
+        return transactions.map(this::mapToResponse);
     }
 
     public List<TransactionResponse> getMonthlyTransactions(int month, int year) {

@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -76,7 +77,10 @@ public class BudgetService {
             List<Transaction> categoryTransactions = transactionRepository
                     .findExpensesByUserIdAndMonth(currentUser.getId(), year, month)
                     .stream()
-                    .filter(t -> budget.getCategory().getId().equals(t.getCategory() != null ? t.getCategory().getId() : null))
+                    .filter(t -> {
+                        Long catId = t.getCategory() != null ? t.getCategory().getId() : null;
+                        return Objects.equals(budget.getCategory().getId(), catId);
+                    })
                     .collect(Collectors.toList());
 
             BigDecimal amountSpent = categoryTransactions.stream()

@@ -1,6 +1,8 @@
 package com.finsight.repository;
 
 import com.finsight.model.Transaction;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,9 +15,11 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    List<Transaction> findByUserIdOrderByDateDesc(Long userId);
+    Page<Transaction> findByUserIdOrderByDateDesc(Long userId, Pageable pageable);
 
-    List<Transaction> findByUserIdAndCategoryIdOrderByDateDesc(Long userId, Long categoryId);
+    Page<Transaction> findByUserIdAndCategoryIdOrderByDateDesc(Long userId, Long categoryId, Pageable pageable);
+
+    List<Transaction> findByUserIdOrderByDateDesc(Long userId);
 
     @Query("SELECT t FROM Transaction t WHERE t.user.id = :userId AND YEAR(t.date) = :year AND MONTH(t.date) = :month ORDER BY t.date DESC")
     List<Transaction> findMonthlyTransactions(@Param("userId") Long userId, @Param("year") int year, @Param("month") int month);

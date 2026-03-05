@@ -52,15 +52,15 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token);
             return true;
         } catch (ExpiredJwtException e) {
-            log.debug("JWT token is expired: {}", e.getMessage());
+            log.warn("JWT token is expired: {}", e.getMessage());
         } catch (MalformedJwtException e) {
-            log.debug("JWT token is malformed: {}", e.getMessage());
+            log.warn("JWT token is malformed: {}", e.getMessage());
         } catch (UnsupportedJwtException e) {
-            log.debug("JWT token is unsupported: {}", e.getMessage());
+            log.warn("JWT token is unsupported: {}", e.getMessage());
         } catch (IllegalArgumentException e) {
-            log.debug("JWT token is empty or null: {}", e.getMessage());
+            log.warn("JWT token is empty or null: {}", e.getMessage());
         } catch (Exception e) {
-            log.debug("JWT token validation failed: {}", e.getMessage());
+            log.warn("JWT token validation failed: {}", e.getMessage());
         }
         return false;
     }
